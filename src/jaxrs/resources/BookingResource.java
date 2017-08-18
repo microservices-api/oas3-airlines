@@ -17,6 +17,7 @@ package jaxrs.resources;
 
 import io.swagger.oas.annotations.Operation;
 import io.swagger.oas.annotations.Parameter;
+import io.swagger.oas.annotations.links.LinkParameters;
 import io.swagger.oas.annotations.parameters.RequestBody;
 import io.swagger.oas.annotations.media.Content;
 import io.swagger.oas.annotations.media.Schema;
@@ -93,9 +94,6 @@ import jaxrs.model.Booking;
 			@ApiResponse(responseCode="200", description="Booking retrieved", content=@Content(schema=@Schema(implementation=Booking.class))),
 			@ApiResponse(responseCode="404", description="Booking not found")
 	})
-	//@ApiResponses({
-		//@ApiResponse(code = 200, message= "Booking retrieved", response=Booking.class),
-		//@ApiResponse(code = 404, message = "Booking not found")})
 	public Response getBooking(
 			@Parameter(
 					name = "id",
@@ -113,6 +111,8 @@ import jaxrs.model.Booking;
 	
 	@PUT
 	@Path("{id}")
+	@LinkParameters()
+	
 	//@ApiOperation(value="Update a booking with ID")
 	@Consumes("application/json")
 	@Produces("text/plain")
