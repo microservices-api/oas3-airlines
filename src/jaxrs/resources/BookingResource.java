@@ -17,7 +17,6 @@ package jaxrs.resources;
 
 import io.swagger.oas.annotations.Operation;
 import io.swagger.oas.annotations.Parameter;
-import io.swagger.oas.annotations.links.LinkParameters;
 import io.swagger.oas.annotations.parameters.RequestBody;
 import io.swagger.oas.annotations.media.Content;
 import io.swagger.oas.annotations.media.Schema;
@@ -46,9 +45,21 @@ import jaxrs.model.Booking;
 	private volatile int currentId = 0;
 	
 	@GET
-	@Operation(summary="Retrieve all bookings for current user", responses={
-			@ApiResponse(content=@Content(schema=@Schema(type="array",implementation=Booking.class)))
-	})
+	@Operation(
+			summary="Retrieve all bookings for current user", 
+			responses={
+					@ApiResponse(
+							responseCode="200",
+							description="Bookings retrieved",
+							content=@Content(
+									schema=@Schema(
+											type="array",
+											implementation=Booking.class))
+							),
+					@ApiResponse(
+							responseCode="404",
+							description="No bookings found for the user.")
+			})
 	@Produces("application/json")
 	public Response getBookings(){
 		return Response.ok().entity(bookings.values()).build();
@@ -89,43 +100,54 @@ import jaxrs.model.Booking;
 	@GET
 	@Path("{id}")
 	@Produces("application/json")
-	//@ApiOperation(value="Get a booking with ID")
-	@Operation(summary="Get a booking with ID", responses={
-			@ApiResponse(responseCode="200", description="Booking retrieved", content=@Content(schema=@Schema(implementation=Booking.class))),
-			@ApiResponse(responseCode="404", description="Booking not found")
-	})
+	@Operation(
+			summary="Get a booking with ID", 
+			responses={
+					@ApiResponse(
+							responseCode="200", 
+							description="Booking retrieved", 
+							content=@Content(
+									schema=@Schema(
+											implementation=Booking.class))),
+					@ApiResponse(
+							responseCode="404", 
+							description="Booking not found")
+			})
 	public Response getBooking(
 			@Parameter(
 					name = "id",
 					description = "ID of the booking",
-					required = true) @PathParam("id") int id){
+					required = true, 
+					in = "path") 
+			@PathParam("id") int id){
 		Booking booking = bookings.get(id);
 		if(booking!=null){
 			return Response.ok().entity(booking).build();	
 		}
-		else{
-			
+		else{			
 			return Response.status(Status.NOT_FOUND).build();	
 		}
 	}
 	
 	@PUT
 	@Path("{id}")
-	@LinkParameters()
-	
-	//@ApiOperation(value="Update a booking with ID")
 	@Consumes("application/json")
 	@Produces("text/plain")
 	
-	@Operation(summary="Update a booking with ID", responses={
-			@ApiResponse(responseCode="200", description="Booking updated"),
-			@ApiResponse(responseCode="404", description="Booking not found")
-	})
-	
-	//@ApiResponses({
-		//@ApiResponse(code = 200, message= "Booking updated"),
-		//@ApiResponse(code = 404, message = "Booking not found")})
-	public Response updateBooking(@PathParam("id") int id, Booking booking){
+	@Operation(
+			summary="Update a booking with ID", 
+			responses={
+					@ApiResponse(
+							responseCode="200", 
+							description="Booking updated"
+							),
+					@ApiResponse(
+							responseCode="404", 
+							description="Booking not found"
+							)
+			})
+	public Response updateBooking(
+			@PathParam("id") int id, Booking booking){
 		if(bookings.get(id)!=null){
 			bookings.put(id, booking);
 			return Response.ok().build();	
@@ -137,16 +159,21 @@ import jaxrs.model.Booking;
 	
 	@DELETE
 	@Path("{id}")
-	//@ApiOperation(value="Delete a booking with ID")
-	@Operation(summary="Delete a booking with ID", responses={
-			@ApiResponse(responseCode="200", description="Booking deleted"),
-			@ApiResponse(responseCode="404", description="Booking not found")
-	})
-	//@ApiResponses({
-		//@ApiResponse(code = 200, message= "Booking deleted"),
-		//@ApiResponse(code = 404, message = "Booking not found")})
+	@Operation(
+			summary="Delete a booking with ID", 
+			responses={
+					@ApiResponse(
+							responseCode="200", 
+							description="Booking deleted"
+							),
+					@ApiResponse(
+							responseCode="404", 
+							description="Booking not found"
+							)
+			})
 	@Produces("text/plain")
-	public Response deleteBooking(@PathParam("id") int id){
+	public Response deleteBooking(
+			@PathParam("id") int id){
 		if(bookings.get(id)!=null) {
 			bookings.remove(id);
 			return Response.ok().build();

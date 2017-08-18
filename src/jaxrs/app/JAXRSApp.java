@@ -22,6 +22,7 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+import io.swagger.oas.annotations.info.Info;
 import io.swagger.oas.annotations.media.Schema;
 //import io.swagger.annotations.SwaggerDefinition;
 //import io.swagger.annotations.Tag;
@@ -30,6 +31,7 @@ import jaxrs.resources.AvailabilityResource;
 import jaxrs.resources.BookingResource;
 
 @ApplicationPath("/")
+@Info(title="Airlines API", version = "1.0")
 //@SwaggerDefinition(tags={@Tag(name="Airline Booking API", description="APIs for booking and managing air flights")})
 @Schema(
 		name = "Airline Booking API",
