@@ -1,11 +1,22 @@
 package jaxrs.model;
 
+import io.swagger.oas.annotations.media.Schema;
+
 public class Review {
 
-	private String id;
-	private String userID;
-	private String airlinesID;
+//	@Schema(example = "0", required = true)
+//	private String id;
+	
+	@Schema(required = true)
+	private User user;
+	
+	@Schema(required = true)
+	private Airline airlines;
+	
+	@Schema(example = "8", required = true)
 	private int rating;
+	
+	@Schema(example = "Great service!")
 	private String comment;
 	
 	/**
@@ -17,11 +28,11 @@ public class Review {
 	 * @param rating the rating for this Review
 	 * @param comment the comments for this Review
 	 */
-	public Review(String id, String userID, String storeID, int rating, String comment) {
+	public Review(User user, Airline airlines, int rating, String comment) {
 		super();
-		this.id = id;
-		this.userID = userID;
-		this.airlinesID = storeID;
+		//this.id = id;
+		this.user = user;
+		this.airlines = airlines;
 		this.rating = rating;
 		this.comment = comment;
 	}
@@ -30,48 +41,48 @@ public class Review {
 	 * Returns the id of this Review
 	 * @return id
 	 */
-	public String getId() {
-		return id;
-	}
+//	public String getId() {
+//		return id;
+//	}
 
 	/**
 	 * Sets the id for this Review
 	 * @param id
 	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+//	public void setId(String id) {
+//		this.id = id;
+//	}
 
 	/**
-	 * Returns the userID of this Review
-	 * @return userID
+	 * Returns the user of this Review
+	 * @return user
 	 */
-	public String getUserID() {
-		return userID;
+	public User getUser() {
+		return user;
 	}
 	
 	/**
-	 * Sets the userID for this Review
-	 * @param userID
+	 * Sets the user for this Review
+	 * @param user
 	 */
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	/**
 	 * Returns the Airlines of this Review
-	 * @return airlinesID
+	 * @return airlines
 	 */
-	public String getAirlinesID() {
-		return airlinesID;
+	public Airline getAirlines() {
+		return airlines;
 	}
 
 	/**
 	 * Sets the airlines for this Review
-	 * @param airlinesID
+	 * @param airlines
 	 */
-	public void setAirlinesID(String airlinesID) {
-		this.airlinesID = airlinesID;
+	public void setAirlinesID(Airline airlines) {
+		this.airlines = airlines;
 	}
 
 	/**
@@ -108,7 +119,7 @@ public class Review {
 
 	@Override
 	public String toString() {
-		return "Review [id=" + id + ", userID=" + userID + ", airlinesID=" + airlinesID + ", rating=" + rating
+		return "Review [userID=" + user + ", airlinesID=" + airlines + ", rating=" + rating
 				+ ", comment=" + comment + "]";
 	}
 	

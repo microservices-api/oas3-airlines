@@ -22,17 +22,23 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+import io.swagger.oas.annotations.info.Contact;
 import io.swagger.oas.annotations.info.Info;
+import io.swagger.oas.annotations.info.License;
 import io.swagger.oas.annotations.media.Schema;
 //import io.swagger.annotations.SwaggerDefinition;
 //import io.swagger.annotations.Tag;
+import io.swagger.oas.annotations.servers.*;
 import jaxrs.resources.AirlinesResource;
 import jaxrs.resources.AvailabilityResource;
 import jaxrs.resources.BookingResource;
+import jaxrs.resources.ReviewResource;
 
 @ApplicationPath("/")
-@Info(title="Airlines API", version = "1.0")
-//@SwaggerDefinition(tags={@Tag(name="Airline Booking API", description="APIs for booking and managing air flights")})
+@Info(title="Airlines API", 
+	  version = "1.0",
+      contact = @Contact(email = "bobsmith@bsmith.com", name ="Bob Smith", url = "http://bobsmith.com"),
+      license = @License(name="license 1", url="http://bobsmith.com"))
 @Schema(
 		name = "Airline Booking API",
 		description = "APIs for booking and managing air flights"
@@ -44,6 +50,7 @@ public class JAXRSApp extends Application {
 		singletons.add(new AirlinesResource());
 		singletons.add(new AvailabilityResource());
 		singletons.add(new BookingResource());
+		singletons.add(new ReviewResource());
 		return singletons;
 	}
 	
