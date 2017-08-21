@@ -129,7 +129,7 @@ public class ReviewResource {
 		List<Review> reviewsByUser = new ArrayList<Review>();
 		for (Review review : reviews.values()) {
 			User currentUser = review.getUser();
-			if (currentUser.getUserName() == user) {
+			if (currentUser.getUsername() == user) {
 				reviewsByUser.add(review);
 			}
 		}
@@ -227,7 +227,7 @@ public class ReviewResource {
 			Airline currentAirline = review.getAirlines();
 			User currentUser = review.getUser();
 			
-			if (currentAirline.getName() == airlines && currentUser.getUserName() == user) {
+			if (currentAirline.getName() == airlines && currentUser.getUsername() == user) {
 				reviewsByAirlinesUser.add(review);
 			}
 		}

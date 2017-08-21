@@ -7,6 +7,12 @@ public class User {
 	@Schema(required = true, example = "3456")
 	private int _id;
 	
+	@Schema(required = true, example = "bsmith")
+	private String userName;
+	
+	@Schema(required = true, example = "bobSm37")
+	private String password;
+	
 	@Schema(required = true, example = "Bob")
 	private String firstName;
 	
@@ -17,34 +23,51 @@ public class User {
 	private String sex;
 	
 	@Schema(required = true, example = "37")
-	private int age;
+	private int age; 	
 	
-	@Schema(required = true, example = "bsmith")
-	private String userName;
+	@Schema(required = true, example = "bob@test.ca")
+  	private String email;
+	
+	@Schema(required = true, example = "123-456-7890")
+ 	private String phone;
+	
+	@Schema(required = true, example = "1")
+ 	private int status;
+	
 	
 	public User() {	
 	}
-	
+
 	/**
-	 * Creates a Users instance with the parameters specified.
+	 * Creates a User instance with the parameters specified.
 	 * 
 	 * @param _id
+	 * @param userName
+	 * @param password
 	 * @param firstName
 	 * @param lastName
 	 * @param sex
 	 * @param age
 	 */
 	
-	public User(int _id, String firstName, String lastName, String sex, int age, String userName){
+	public User(int _id, String firstName, String lastName, String sex, int age, String userName, String password){
 		this._id = _id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.sex = sex;
 		this.age = age;
+		this.password = password;
 	}
 	
 	/**
 	 * Returns the _id property of a Users instance
+	 * @param email
+	 * @param phone
+	 * @param status
+	 */
+
+	/**
+	 * Returns the _id property of a User instance
 	 * 
 	 * @return int _id
 	 */
@@ -64,7 +87,47 @@ public class User {
 	}
 	
 	/**
-	 * Returns firstName property of a Users instance.
+	 * Returns the userName property of a User instance.
+	 * 
+	 * @return String userName
+	 */
+	
+	public String getUsername() {
+	    return userName;
+	}
+	
+	/**
+	 * Sets the userName property of a User instance to the parameter.
+	 * 
+	 * @param userName
+	 */
+
+	public void setUsername(String userName) {
+		this.userName = userName;
+	}
+	
+	/**
+	 * Returns the password property of a User instance.
+	 * 
+	 * @return String password
+	 */
+	
+	public String getPassword() {
+	    return password;
+	}
+	
+	/**
+	 * Sets the password property of a User instance to the parameter.
+	 * 
+	 * @param password
+	 */
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	/**
+	 * Returns firstName property of a User instance.
 	 * 
 	 * @return String firstName
 	 */
@@ -74,7 +137,7 @@ public class User {
 	}
 	
 	/**
-	 * Sets firstName property of a Users instance to the parameter.
+	 * Sets the firstName property of a User instance to the parameter.
 	 * 
 	 * @param firstName
 	 */
@@ -84,7 +147,7 @@ public class User {
 	}
 	
 	/**
-	 * Returns the lastName property of a Users instance.
+	 * Returns the lastName property of a User instance.
 	 * 
 	 * @return String lastName
 	 */
@@ -94,7 +157,7 @@ public class User {
 	}
 	
 	/**
-	 * Sets lastName property of a Users instance to the parameter.
+	 * Sets the lastName property of a User instance to the parameter.
 	 * 
 	 * @param lastName
 	 */
@@ -104,7 +167,7 @@ public class User {
 	}
 	
 	/**
-	 * Returns the sex property of a Users instance.
+	 * Returns the sex property of a User instance.
 	 * 
 	 * @return String sex
 	 */
@@ -114,7 +177,7 @@ public class User {
 	}
 	
 	/**
-	 * Sets sex property of a Users instance to the parameter.
+	 * Sets the sex property of a User instance to the parameter.
 	 * 
 	 * @param sex
 	 */
@@ -124,7 +187,7 @@ public class User {
 	}
 	
 	/**
-	 * Returns the age property of a Users instance.
+	 * Returns the age property of a User instance.
 	 * 
 	 * @return int age
 	 */
@@ -134,31 +197,67 @@ public class User {
 	}
 	
 	/**
-	 * Sets age property of a Users instance to the parameter.
+	 * Sets the age property of a User instance to the parameter.
 	 * 
 	 * @param age
 	 */
+	
 	public void setAge(int age){
 		this.age = age;
 	}
-
+	
 	/**
-	 * Returns the userName property of a Users instance.
+	 * Returns the email property of a User instance.
 	 * 
-	 * @return String userName
+	 * @return String email
 	 */
-	public String getUserName() {
-		return userName;
-	}
-
-	/**
-	 * Sets userName  property of a Users instance to the parameter.
-	 * 
-	 * @param userName
-	 */
-	public void setUserName(String userName) {
-		this.userName = userName;
+	
+	public String getEmail() {
+		return email;
 	}
 	
+	/**
+	 * Sets the email property of a User instance to the parameter.
+	 * 
+	 * @param email
+	 */
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	
+	/**
+	 * Returns the phone property of a User instance.
+	 * 
+	 * @return String phone
+	 */
+	
+	public String getPhone() {
+	    return phone;
+	}
+	
+	/**
+	 * Sets the phone property of a User instance to the parameter.
+	 * 
+	 * @param phone
+	 */
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
+	@Schema(
+			  name = "status",
+			  title = "User Status",
+			  _enum = {"1-registered", "2-active", "3-closed"}
+			  )
+	      
+	public int getUserStatus() {
+		return status;
+	}
+
+	public void setUserStatus(int status) {
+	    this.status = status;
+	}
+
 }
