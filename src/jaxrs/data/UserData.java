@@ -42,6 +42,15 @@ public class UserData {
 	    }
 	    return null;
 	  }
+	  
+	  public User findUserById(int _id) {
+		    for (User user : users) {
+		      if (user.getId() == _id) {
+		        return user;
+		      }
+		    }
+		    return null;
+		  }
 
 	  public void addUser(User user) {
 	    if(user.getUsername() == null)

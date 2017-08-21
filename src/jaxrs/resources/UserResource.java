@@ -1,7 +1,13 @@
 package jaxrs.resources;
 
 import io.swagger.oas.annotations.*;
+import io.swagger.oas.annotations.info.Contact;
+import io.swagger.oas.annotations.parameters.RequestBody;
+import io.swagger.oas.annotations.info.License;
+import io.swagger.oas.annotations.links.Link;
+import io.swagger.oas.annotations.links.LinkParameters;
 import io.swagger.oas.annotations.media.Schema;
+import io.swagger.oas.annotations.media.ExampleObject;
 import io.swagger.oas.annotations.responses.ApiResponse;
 import io.swagger.oas.annotations.media.Content;
 import jaxrs.data.UserData;
@@ -13,8 +19,24 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.*;
 
 @Path("/user")
-@Schema(name = "/user")
+@Contact(
+		name = "AirlinesRatingApp API Support",
+		url = "http://airlinesapisupport.com/help",
+		email = "askus@airlinessupport.com"
+		)
+@License(
+		name = "Apache 2.0",
+		url = "http://www.apache.org/licenses/LICENSE-2.0.html"
+		)
+@Schema(
+		name = "User Schema",
+		description = "API resource for user model.",
+		externalDocs = @ExternalDocumentation(				
+				description = "For more information, see the link.",
+				url = "https://github.com/janamanoharan/airlinesratingapp")
+		)
 @Produces({"application/json", "application/xml"})
+
 public class UserResource {
 
 	  static UserData userData = new UserData();
@@ -24,10 +46,23 @@ public class UserResource {
 			  method = "post",
 			  summary = "Create user",
 			  description = "This can only be done by the logged in user.",
+			  requestBody = @RequestBody(
+					  description = "Record of a new user to be created in the system.",
+					  content = @Content(
+							  mediaType = "application/json",
+							  schema = @Schema(
+									  implementation = User.class),
+							  examples = @ExampleObject(
+										  name = "user",
+										  summary = "External user example",
+										  externalValue = "http://foo.bar/examples/user-example.json"
+										  )
+							  )
+					  ),
 			  responses = {
 					  @ApiResponse(
 							  responseCode = "200",
-							  description = "successful operation"
+							  description = "New user record successfully created"
 							  ),
 					  @ApiResponse(
 							  responseCode = "400",
@@ -70,7 +105,7 @@ public class UserResource {
 	  @Path("/createWithList")
 	  @Operation(
 			  method = "post",
-			  summary = "Creates list of users with given input array",
+			  summary = "Creates list of users with given input list",
 			  responses = {
 					  @ApiResponse(
 							  responseCode = "200",
@@ -94,6 +129,10 @@ public class UserResource {
 			  summary = "Updated user",
 			  description = "This can only be done by the logged in user.",
 			  responses = {
+					  @ApiResponse(
+							  responseCode = "200", 
+							  description = "User updated successfully"
+							  ),
 					  @ApiResponse(
 							  responseCode = "400", 
 							  description = "Invalid user supplied"
@@ -126,6 +165,10 @@ public class UserResource {
 			  description = "This can only be done by the logged in user.",
 			  responses = {
 					  @ApiResponse(
+							  responseCode = "200", 
+							  description = "User deleted successfully"
+							  ),
+					  @ApiResponse(
 							  responseCode = "400", 
 							  description = "Invalid username supplied"
 							  ),
@@ -154,6 +197,7 @@ public class UserResource {
 	  @Operation(
 			  method = "get",
 			  summary = "Get user by user name",
+			  operationId = "getUserName",
 			  responses = {
 					  @ApiResponse(
 							  responseCode = "200", 
@@ -190,6 +234,56 @@ public class UserResource {
 	      throw new NotFoundException(404, "User not found");
 	    }
 	  }
+	  
+	  @GET
+	  @Path("/{id}")
+	  @Operation(
+			  method = "get",
+			  summary = "Get user by id",
+			  responses = {
+					  @ApiResponse(
+							  responseCode = "200", 
+							  description = "Successful operation",
+							  content = @Content(
+										schema = @Schema(implementation = User.class)
+								),
+							  links = @Link(
+									  name = "User name",
+									  description = "The username corresponding to provided user id",
+									  operationId = "getUserName",
+									  parameters = @LinkParameters(
+											  name = "userId",
+											  expression = "$request.path.id"))
+							  ),
+					  @ApiResponse(
+							  responseCode = "400", 
+							  description = "Invalid id supplied",
+							  content = @Content(
+										schema = @Schema(implementation = User.class)
+								)),
+					  @ApiResponse(
+							  responseCode = "404", 
+							  description = "User not found",
+									  content = @Content(
+												schema = @Schema(implementation = User.class)
+										)
+							  ) 
+					  })
+	  public Response getUserById(
+	      @Parameter(
+	    		  name = "id",
+	    		  description = "The name that needs to be fetched. Use 1 for testing.", 
+	    		  schema = @Schema(type = "int"),
+	    		  required = true
+	    		  ) 
+	      @PathParam("id") int _id) throws ApiException {
+	    User user = userData.findUserById(_id);
+	    if (null != user) {
+	      return Response.ok().entity(user).build();
+	    } else {
+	      throw new NotFoundException(404, "User not found");
+	    }
+	  }
 
 	  @GET
 	  @Path("/login")
@@ -202,7 +296,7 @@ public class UserResource {
 							  responseCode = "200", 
 							  description = "successful operation",
 							  content = @Content(
-										schema = @Schema(implementation = String.class)
+										schema = @Schema(implementation = User.class)
 								)
 							  ),
 					  
@@ -238,6 +332,7 @@ public class UserResource {
 			  summary = "Logs out current logged in user session",
 			  responses = {  
 					  @ApiResponse(
+							  responseCode = "200",
 							  description = "successful operation"
 							  ) 
 					  })

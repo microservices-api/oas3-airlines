@@ -25,7 +25,7 @@ public class User {
 	@Schema(required = true, example = "37")
 	private int age;
 	
-	@Schema(required = true, example = "bob@mail.ca")
+	@Schema(required = true, example = "bob@test.ca")
 	private String email;
 	
 	@Schema(required = true, example = "123-456-7890")
@@ -38,11 +38,15 @@ public class User {
 	 * Creates a User instance with the parameters specified.
 	 * 
 	 * @param _id
+	 * @param userName
+	 * @param password
 	 * @param firstName
 	 * @param lastName
 	 * @param sex
 	 * @param age
 	 * @param email
+	 * @param phone
+	 * @param status
 	 */
 	
 	public User(){
@@ -234,15 +238,13 @@ public class User {
 			  title = "User Status",
 			  _enum = {"1-registered", "2-active", "3-closed"}
 			  )
-	    
+	      
+	public int getUserStatus() {
+		return status;
+	}
 
-	  
-	  public int getUserStatus() {
-	    return status;
-	  }
-
-	  public void setUserStatus(int status) {
+	public void setUserStatus(int status) {
 	    this.status = status;
-	  }
+	}
 
 }
