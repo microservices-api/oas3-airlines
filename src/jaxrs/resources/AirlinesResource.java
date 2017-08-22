@@ -32,7 +32,7 @@ import jaxrs.model.Airline;
 @Path("")
 @Schema(name = "Airline Booking API")
 
-public class AirlinesResource {
+	public class AirlinesResource {
 	private static Map<Integer, Airline> airlines = new ConcurrentHashMap<Integer, Airline>();
 	
 	static {

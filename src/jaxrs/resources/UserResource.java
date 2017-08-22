@@ -2,13 +2,19 @@ package jaxrs.resources;
 
 import io.swagger.oas.annotations.*;
 import io.swagger.oas.annotations.info.Contact;
+import io.swagger.oas.annotations.info.Info;
 import io.swagger.oas.annotations.parameters.RequestBody;
 import io.swagger.oas.annotations.info.License;
 import io.swagger.oas.annotations.links.Link;
 import io.swagger.oas.annotations.links.LinkParameters;
 import io.swagger.oas.annotations.media.Schema;
+import io.swagger.oas.annotations.media.ArraySchema;
 import io.swagger.oas.annotations.media.ExampleObject;
 import io.swagger.oas.annotations.responses.ApiResponse;
+import io.swagger.oas.annotations.security.SecurityScheme;
+import io.swagger.oas.annotations.security.OAuthFlows;
+import io.swagger.oas.annotations.security.OAuthFlow;
+import io.swagger.oas.annotations.security.Scopes;
 import io.swagger.oas.annotations.media.Content;
 import jaxrs.data.UserData;
 import jaxrs.model.User;
@@ -19,33 +25,48 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.*;
 
 @Path("/user")
-@Contact(
-		name = "AirlinesRatingApp API Support",
-		url = "http://airlinesapisupport.com/help",
-		email = "askus@airlinessupport.com"
-		)
-@License(
-		name = "Apache 2.0",
-		url = "http://www.apache.org/licenses/LICENSE-2.0.html"
-		)
-@Schema(
-		name = "User Schema",
-		description = "API resource for user model.",
-		externalDocs = @ExternalDocumentation(				
-				description = "For more information, see the link.",
-				url = "https://github.com/janamanoharan/airlinesratingapp")
-		)
 @Produces({"application/json", "application/xml"})
+@Info(
+	title = "User Resource API",
+	version = "1.0.0",
+	description = "API resource for User model of the AirlinesRatingApp.",
+	termsOfService = "http://exampleurl.com/termsofservice",
+	contact = @Contact(
+			name = "AirlinesRatingApp API Support Team",
+			url = "http://exampleurl.com/contact",
+			email = "ask@airlinessupport.com"
+			),
+	license = @License(
+			name = "Apache 2.0",
+			url = "http://www.apache.org/licenses/LICENSE-2.0.html"
+			)
+	)
+@SecurityScheme(
+		  type = "apiKey",
+		  name = "",
+		  in = "",
+		  scheme = "",
+		  flows = @OAuthFlows(
+				  implicit = @OAuthFlow(
+						  authorizationUrl = "http://exampleurl.com/authorization", 
+						  scopes = @Scopes(
+								  name = "write:users", 
+								  description = "modify user/s record/s in airlines database."
+								  )
+						  )
+				  )
+		  )
 
 public class UserResource {
 
 	  static UserData userData = new UserData();
-
+	  
 	  @POST
 	  @Operation(
 			  method = "post",
 			  summary = "Create user",
 			  description = "This can only be done by the logged in user.",
+			  operationId = "createUser",
 			  requestBody = @RequestBody(
 					  description = "Record of a new user to be created in the system.",
 					  content = @Content(
@@ -54,15 +75,94 @@ public class UserResource {
 									  implementation = User.class),
 							  examples = @ExampleObject(
 										  name = "user",
-										  summary = "External user example",
+										  summary = "External user example",										  
 										  externalValue = "http://foo.bar/examples/user-example.json"
 										  )
 							  )
 					  ),
+			  parameters = {
+					  @Parameter(
+							  name = "_id",
+							  in = "query",
+							  description = "User id for the new user record to be created",
+							  required = true,
+							 // style = "form",
+							  schema = @Schema(type = "integer", format = "int32")
+							  ),
+					  @Parameter(
+							  name = "userName",
+							  in = "query",
+							  description = "Username for the new user record to be created",
+							  required = true,
+							  schema = @Schema(
+									  type = "string", 
+									  externalDocs = @ExternalDocumentation(
+											  description = "How to create good user names.",
+											  url = "http://exampleurl.com/usernames"
+											  )
+									  )
+							  ),
+					  @Parameter(
+							  name = "password",
+							  in = "query",
+							  description = "User password for the new user record to be created",
+							  required = true,
+							  hidden = true,
+							  schema = @Schema(
+									  type = "string",
+									  externalDocs = @ExternalDocumentation(
+											  description = "How to create good passwords.",
+											  url = "http://exampleurl.com/passwords"
+											  )
+									  )
+							  ),
+					  @Parameter(
+							  name = "firstName",
+							  in = "query",
+							  description = "User's first name for the new user record to be created",
+							  required = true,
+							  schema = @Schema(type = "string")
+							  ),
+					  @Parameter(
+							  name = "lastName",
+							  in = "query",
+							  description = "User's last name for the new user record to be created",
+							  required = true,
+							  schema = @Schema(type = "string")
+							  ),
+					  @Parameter(
+							  name = "sex",
+							  in = "query",
+							  description = "User's sex for the new user record to be created",
+							  required = true,
+							  schema = @Schema(type = "string")
+							  ),
+					  @Parameter(
+							  name = "age",
+							  in = "query",
+							  description = "User's age for the new user record to be created",
+							  required = true,
+							  schema = @Schema(type = "integer", format = "int64")
+							  ),
+					  @Parameter(
+							  name = "phone",
+							  in = "query",
+							  description = "User phone number for the new user record to be created",
+							  required = true,
+							  schema = @Schema(type = "string")
+							  ),
+					  @Parameter(
+							  name = "status",
+							  in = "query",
+							  description = "User status for the new user record to be created",
+							  required = true,
+							  schema = @Schema(type = "integer")
+							  )
+			  },
 			  responses = {
 					  @ApiResponse(
 							  responseCode = "200",
-							  description = "New user record successfully created"
+							  description = "New user record successfully created."
 							  ),
 					  @ApiResponse(
 							  responseCode = "400",
@@ -83,16 +183,36 @@ public class UserResource {
 	  @Path("/createWithArray")
 	  @Operation(
 			  method = "post",
-			  summary = "Creates list of users with given input array",
+			  summary = "Creates list of users with given input array", //Array of User objects
+			  operationId = "createUsersFromArray",
+			  parameters = {
+					  @Parameter(
+							  name = "userArray",
+							  in = "query",
+							  description = "An array of User objects to create records.",
+							  required = true,
+							  schema = @Schema(
+									  type = "array"
+									  ),
+							  array = @ArraySchema(
+									  minItems = 2,
+									  schema = @Schema(
+											  implementation = User.class))
+							  )
+			  },
 			  responses = {
 					  @ApiResponse(
 							  responseCode = "200",
-							  description = "successful operation"
+							  description = "Successfully created list of users."
+							  ),
+					  @ApiResponse(
+							  responseCode = "400",
+							  description = "Unable to create list of users."
 							  )
 			  })
 	  public Response createUsersWithArrayInput(
 			  @Parameter(
-					  description = "List of user object", 
+					  description = "Array of user object", 
 					  required = true
 					  ) User[] users) {
 	      for (User user : users) {
@@ -105,11 +225,16 @@ public class UserResource {
 	  @Path("/createWithList")
 	  @Operation(
 			  method = "post",
-			  summary = "Creates list of users with given input list",
+			  summary = "Creates list of users with given input list", //List of User objects
+			  operationId = "createUsersFromList",
 			  responses = {
 					  @ApiResponse(
 							  responseCode = "200",
-							  description = "successful operation"
+							  description = "Successfully created list of users."
+							  ),
+					  @ApiResponse(
+							  responseCode = "400",
+							  description = "Unable to create list of users."
 							  )
 			  })
 	  public Response createUsersWithListInput(
@@ -126,8 +251,22 @@ public class UserResource {
 	  @Path("/{username}")
 	  @Operation(
 			  method = "put",
-			  summary = "Updated user",
+			  summary = "Update user",
 			  description = "This can only be done by the logged in user.",
+			  operationId = "updateUser",
+			  requestBody = @RequestBody(
+					  description = "Record of a new user to be created in the system.",
+					  content = @Content(
+							  mediaType = "application/json",
+							  schema = @Schema(
+									  implementation = User.class),
+									  examples = @ExampleObject(
+												  name = "user",
+												  summary = "Example user properties to update",
+												  value = "Properties to update in JSON format here"
+											  )
+							  )
+					  ),
 			  responses = {
 					  @ApiResponse(
 							  responseCode = "200", 
@@ -145,7 +284,7 @@ public class UserResource {
 	  public Response updateUser(
 	      @Parameter(
 	    		  name = "username",
-	    		  description = "name that need to be deleted",
+	    		  description = "User that needs to be updated",
 	    		  schema = @Schema(type = "String"),
 	    		  required = true
 	    		  ) 
@@ -163,6 +302,7 @@ public class UserResource {
 			  method = "delete",
 			  summary = "Delete user",
 			  description = "This can only be done by the logged in user.",
+			  operationId = "deleteUser",
 			  responses = {
 					  @ApiResponse(
 							  responseCode = "200", 
@@ -197,11 +337,11 @@ public class UserResource {
 	  @Operation(
 			  method = "get",
 			  summary = "Get user by user name",
-			  operationId = "getUserName",
+			  operationId = "getUserByUserName",
 			  responses = {
 					  @ApiResponse(
 							  responseCode = "200", 
-							  description = "successful operation",
+							  description = "Successfully retrieved user by user name.",
 							  content = @Content(
 										schema = @Schema(implementation = User.class)
 								)),
@@ -240,10 +380,11 @@ public class UserResource {
 	  @Operation(
 			  method = "get",
 			  summary = "Get user by id",
+			  operationId = "getUserById",
 			  responses = {
 					  @ApiResponse(
 							  responseCode = "200", 
-							  description = "Successful operation",
+							  description = "Successfully retrieved user by id.",
 							  content = @Content(
 										schema = @Schema(implementation = User.class)
 								),
@@ -273,7 +414,7 @@ public class UserResource {
 	      @Parameter(
 	    		  name = "id",
 	    		  description = "The name that needs to be fetched. Use 1 for testing.", 
-	    		  schema = @Schema(type = "int"),
+	    		  schema = @Schema(type = "integer"),
 	    		  required = true
 	    		  ) 
 	      @PathParam("id") int _id) throws ApiException {
@@ -290,11 +431,16 @@ public class UserResource {
 	  @Operation(
 			  method = "get",
 			  summary = "Logs user into the system",
+			  operationId = "logInUser",
+					  externalDocs = @ExternalDocumentation(
+							  description = "Policy on user security.",
+							  url = "http://exampleurl.com/policy"
+							  ),
 			  responses = {
 					  
 					  @ApiResponse(
 							  responseCode = "200", 
-							  description = "successful operation",
+							  description = "Successful user login.",
 							  content = @Content(
 										schema = @Schema(implementation = User.class)
 								)
@@ -330,10 +476,15 @@ public class UserResource {
 	  @Operation(
 			  method = "get",
 			  summary = "Logs out current logged in user session",
+			  operationId = "logOutUser",
+			  externalDocs = @ExternalDocumentation(
+					  description = "Policy on user security.",
+					  url = "http://exampleurl.com/policy"
+					  ),
 			  responses = {  
 					  @ApiResponse(
 							  responseCode = "200",
-							  description = "successful operation"
+							  description = "Successful user logout."
 							  ) 
 					  })
 	  public Response logoutUser() {
