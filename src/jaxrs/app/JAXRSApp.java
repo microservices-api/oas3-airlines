@@ -26,6 +26,7 @@ import io.swagger.oas.annotations.info.Contact;
 import io.swagger.oas.annotations.info.Info;
 import io.swagger.oas.annotations.info.License;
 import io.swagger.oas.annotations.media.Schema;
+import io.swagger.oas.annotations.security.SecurityRequirement;
 import jaxrs.resources.AirlinesResource;
 import jaxrs.resources.AvailabilityResource;
 import jaxrs.resources.BookingResource;
@@ -36,6 +37,10 @@ import jaxrs.resources.ReviewResource;
 	  version = "1.0",
       contact = @Contact(email = "bobsmith@bsmith.com", name ="Bob Smith", url = "http://bobsmith.com"),
       license = @License(name="license 1", url="http://bobsmith.com"))
+@SecurityRequirement(
+		name = "airlines_auth",
+		scopes = {"write:reviews"}
+		)
 @Schema(
 		name = "Airline Booking API",
 		description = "APIs for booking and managing air flights"

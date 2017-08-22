@@ -17,7 +17,8 @@ import javax.ws.rs.core.Response.Status;
 
 import io.swagger.oas.annotations.Operation;
 import io.swagger.oas.annotations.Parameter;
-
+import io.swagger.oas.annotations.security.OAuthFlows;
+import io.swagger.oas.annotations.security.OAuthFlow;
 import io.swagger.oas.annotations.servers.Server;
 import io.swagger.oas.annotations.servers.ServerVariable;
 import io.swagger.oas.annotations.media.Content;
@@ -26,12 +27,31 @@ import io.swagger.oas.annotations.parameters.Parameters;
 import io.swagger.oas.annotations.parameters.RequestBody;
 import io.swagger.oas.annotations.media.ExampleObject;
 import io.swagger.oas.annotations.responses.ApiResponse;
+import io.swagger.oas.annotations.security.SecurityScheme;
+import io.swagger.oas.annotations.security.Scopes;
 import jaxrs.model.Airline;
 import jaxrs.model.Review;
 import jaxrs.model.User;
 
 @Path("/reviews")
 @Schema(name = "Airlines Rating App")
+@SecurityScheme(
+		type = "oauth2",
+		description = "authentication needed to create and delete reviews",
+		flows = @OAuthFlows(
+					implicit = @OAuthFlow(
+							authorizationUrl = "https://example.com/api/oauth/dialog",
+							scopes = @Scopes(
+									name = "write:reviews",
+									description = "create a review"
+									)
+							),
+					authorizationCode = @OAuthFlow(
+							authorizationUrl = "https://example.com/api/oauth/dialog",
+							tokenUrl = "https://example.com/api/oauth/token"
+							)
+				),
+		name = "")
 public class ReviewResource {
 	
 	private static Map<Integer, Review> reviews = new ConcurrentHashMap<Integer, Review>();
@@ -145,6 +165,9 @@ public class ReviewResource {
 	@Path("{user}")
 	@Operation(
 			summary="Get all reviews by airlines", 
+			parameters = {
+					
+			},
 			responses={
 					@ApiResponse(
 							responseCode="200", 
@@ -221,7 +244,6 @@ public class ReviewResource {
 					})
 			@PathParam("user") String user,
 			@PathParam("airlines") String airlines){
-		
 		List<Review> reviewsByAirlinesUser = new ArrayList<Review>();
 		for (Review review : reviews.values()) {
 			Airline currentAirline = review.getAirlines();
