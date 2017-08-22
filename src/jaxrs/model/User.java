@@ -7,7 +7,7 @@ public class User {
 	@Schema(required = true, example = "3456")
 	private int _id;
 	
-	@Schema(required = true, example = "bsmith")
+	@Schema(required = true, example = "user1")
 	private String userName;
 	
 	@Schema(required = true, example = "bobSm37")
@@ -23,21 +23,17 @@ public class User {
 	private String sex;
 	
 	@Schema(required = true, example = "37")
-	private int age; 	
+	private int age;
 	
 	@Schema(required = true, example = "bob@test.ca")
-  	private String email;
+	private String email;
 	
 	@Schema(required = true, example = "123-456-7890")
- 	private String phone;
+	private String phone;
 	
 	@Schema(required = true, example = "1")
- 	private int status;
+	private int status;
 	
-	
-	public User() {	
-	}
-
 	/**
 	 * Creates a User instance with the parameters specified.
 	 * 
@@ -48,24 +44,15 @@ public class User {
 	 * @param lastName
 	 * @param sex
 	 * @param age
-	 */
-	
-	public User(int _id, String firstName, String lastName, String sex, int age, String userName, String password){
-		this._id = _id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.sex = sex;
-		this.age = age;
-		this.password = password;
-	}
-	
-	/**
-	 * Returns the _id property of a Users instance
 	 * @param email
 	 * @param phone
 	 * @param status
 	 */
+	
+	public User(){
 
+	}
+	
 	/**
 	 * Returns the _id property of a User instance
 	 * 
@@ -77,7 +64,7 @@ public class User {
 	}
 	
 	/**
-	 * Sets _id property of a Users instance to the parameter.
+	 * Sets the _id property of a User instance to the parameter.
 	 * 
 	 * @param _id
 	 */

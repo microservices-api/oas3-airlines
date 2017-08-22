@@ -24,7 +24,7 @@ public class Review {
 	 * 
 	 * @param id the unique id of this Review
 	 * @param userID the user associated with this Review
-	 * @param airlinesID the Airline associated with this Revoew
+	 * @param airlinesID the Airline associated with this Review
 	 * @param rating the rating for this Review
 	 * @param comment the comments for this Review
 	 */

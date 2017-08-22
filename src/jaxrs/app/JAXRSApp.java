@@ -27,23 +27,36 @@ import io.swagger.oas.annotations.info.Info;
 import io.swagger.oas.annotations.info.License;
 import io.swagger.oas.annotations.media.Schema;
 import io.swagger.oas.annotations.security.SecurityRequirement;
+import io.swagger.oas.annotations.ExternalDocumentation;
 import jaxrs.resources.AirlinesResource;
 import jaxrs.resources.AvailabilityResource;
 import jaxrs.resources.BookingResource;
-import jaxrs.resources.ReviewResource;
 
 @ApplicationPath("/")
-@Info(title="Airlines API", 
-	  version = "1.0",
-      contact = @Contact(email = "bobsmith@bsmith.com", name ="Bob Smith", url = "http://bobsmith.com"),
-      license = @License(name="license 1", url="http://bobsmith.com"))
+
 @SecurityRequirement(
 		name = "airlines_auth",
 		scopes = {"write:reviews"}
 		)
+@Info(
+		title="AirlinesRatingApp API", 
+		version = "1.0", 
+		contact = @Contact(
+				name = "AirlinesRatingApp API Support",
+				url = "http://airlinesapisupport.com/help",
+				email = "askus@airlinessupport.com"
+				)
+		)
+
+@License(
+		name = "Apache 2.0",
+		url = "http://www.apache.org/licenses/LICENSE-2.0.html")
 @Schema(
-		name = "Airline Booking API",
-		description = "APIs for booking and managing air flights"
+		name = "AirlinesRatingApp API",
+		description = "APIs for booking and managing air flights",
+		externalDocs = @ExternalDocumentation(
+				description = "For more information, see the link.",
+				url = "https://github.com/janamanoharan/airlinesratingapp")
 		)
 public class JAXRSApp extends Application {
 	@Override
@@ -52,7 +65,6 @@ public class JAXRSApp extends Application {
 		singletons.add(new AirlinesResource());
 		singletons.add(new AvailabilityResource());
 		singletons.add(new BookingResource());
-		singletons.add(new ReviewResource());
 		return singletons;
 	}
 	
