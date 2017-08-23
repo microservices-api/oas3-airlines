@@ -19,6 +19,7 @@ import io.swagger.oas.annotations.Operation;
 import io.swagger.oas.annotations.Parameter;
 import io.swagger.oas.annotations.parameters.RequestBody;
 import io.swagger.oas.annotations.media.Content;
+import io.swagger.oas.annotations.media.ExampleObject;
 import io.swagger.oas.annotations.media.Schema;
 import io.swagger.oas.annotations.responses.ApiResponse;
 
@@ -37,6 +38,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import jaxrs.model.Booking;
+import jaxrs.model.User;
 
 @Path("/bookings")
 
@@ -67,21 +69,34 @@ import jaxrs.model.Booking;
 	
 	@POST
 	@Operation(
+			method = "post",
 			summary="Create a booking",
+			description = "Create a new booking record with the booking information provided.",
+			requestBody = @RequestBody(
+						description = "Create a new booking with the provided information.",
+						content = @Content(
+								mediaType = "application/json",
+								schema = @Schema(implementation = Booking.class),
+								examples = @ExampleObject(
+										name = "booking",
+										summary = "External booking example",										  
+										externalValue = "http://foo.bar/examples/booking-example.json"
+										)
+								)
+					),
 			responses={
 					@ApiResponse(
 							responseCode="201",
 							description="Booking created",
 							content = @Content(
-									schema=@Schema(name= "id", description = "id of the new booking",type="string")))
-					  },
-			requestBody = @RequestBody(
-					content = @Content(
-							mediaType = "application/json",
-							schema = @Schema(implementation = Booking.class)),
-					required = true,
-					description = "example booking to add"
-					)
+									schema=@Schema(
+											name= "id", 
+											description = "id of the new booking",
+											type="string"
+											)
+									)
+							)
+					  }
 			)
 	@Consumes("application/json")
 	@Produces("application/json")
@@ -164,11 +179,11 @@ import jaxrs.model.Booking;
 			responses={
 					@ApiResponse(
 							responseCode="200", 
-							description="Booking deleted"
+							description="Booking deleted successfully."
 							),
 					@ApiResponse(
 							responseCode="404", 
-							description="Booking not found"
+							description="Booking not found."
 							)
 			})
 	@Produces("text/plain")

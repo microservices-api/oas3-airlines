@@ -15,6 +15,7 @@ import io.swagger.oas.annotations.security.SecurityScheme;
 import io.swagger.oas.annotations.security.OAuthFlows;
 import io.swagger.oas.annotations.security.OAuthFlow;
 import io.swagger.oas.annotations.security.Scopes;
+import io.swagger.oas.annotations.security.SecurityRequirement;
 import io.swagger.oas.annotations.media.Content;
 import jaxrs.data.UserData;
 import jaxrs.model.User;
@@ -42,8 +43,8 @@ import javax.ws.rs.*;
 			)
 	)
 @SecurityScheme(
-		  type = "apiKey",
-		  name = "",
+		  type = "oauth2",
+		  name = "users",
 		  in = "",
 		  scheme = "",
 		  flows = @OAuthFlows(
@@ -56,6 +57,9 @@ import javax.ws.rs.*;
 						  )
 				  )
 		  )
+@SecurityRequirement(
+		name = "users",
+		scopes = "write:users")
 
 public class UserResource {
 
@@ -69,10 +73,10 @@ public class UserResource {
 			  operationId = "createUser",
 			  requestBody = @RequestBody(
 					  description = "Record of a new user to be created in the system.",
+							  required = true,
 					  content = @Content(
 							  mediaType = "application/json",
-							  schema = @Schema(
-									  implementation = User.class),
+							  schema = @Schema(implementation = User.class),
 							  examples = @ExampleObject(
 										  name = "user",
 										  summary = "External user example",										  
@@ -86,7 +90,7 @@ public class UserResource {
 							  in = "query",
 							  description = "User id for the new user record to be created",
 							  required = true,
-							 // style = "form",
+							  style = "form",
 							  schema = @Schema(type = "integer", format = "int32")
 							  ),
 					  @Parameter(
@@ -127,6 +131,7 @@ public class UserResource {
 							  name = "lastName",
 							  in = "query",
 							  description = "User's last name for the new user record to be created",
+							  style = "form",
 							  required = true,
 							  schema = @Schema(type = "string")
 							  ),
@@ -135,6 +140,7 @@ public class UserResource {
 							  in = "query",
 							  description = "User's sex for the new user record to be created",
 							  required = true,
+							  style = "form",
 							  schema = @Schema(type = "string")
 							  ),
 					  @Parameter(
@@ -191,14 +197,20 @@ public class UserResource {
 							  in = "query",
 							  description = "An array of User objects to create records.",
 							  required = true,
+							  content = @Content(
+									  mediaType = "application/json",
+									  schema = @Schema(implementation = User.class)
+									  ),									  
 							  schema = @Schema(
-									  type = "array"
+									  type = "array" //Must have items field if type is array, but items is not part of annotation
 									  ),
 							  array = @ArraySchema(
-									  minItems = 2,
 									  schema = @Schema(
-											  implementation = User.class))
-							  )
+											  type = "object",
+											  implementation = User.class
+											  ),
+									  minItems = 2)
+							  )							  
 			  },
 			  responses = {
 					  @ApiResponse(
@@ -258,13 +270,12 @@ public class UserResource {
 					  description = "Record of a new user to be created in the system.",
 					  content = @Content(
 							  mediaType = "application/json",
-							  schema = @Schema(
-									  implementation = User.class),
-									  examples = @ExampleObject(
-												  name = "user",
-												  summary = "Example user properties to update",
-												  value = "Properties to update in JSON format here"
-											  )
+							  schema = @Schema(implementation = User.class),
+							  examples = @ExampleObject(
+									  name = "user",
+									  summary = "Example user properties to update",
+									  value = "Properties to update in JSON format here"
+									  )
 							  )
 					  ),
 			  responses = {
@@ -391,7 +402,7 @@ public class UserResource {
 							  links = @Link(
 									  name = "User name",
 									  description = "The username corresponding to provided user id",
-									  operationId = "getUserName",
+									  operationId = "getUserByName",
 									  parameters = @LinkParameters(
 											  name = "userId",
 											  expression = "$request.path.id"))
@@ -450,7 +461,8 @@ public class UserResource {
 							  responseCode = "400", 
 							  description = "Invalid username/password supplied"
 							  )
-					  })
+					  }
+			  )
 			
 	  public Response loginUser(
 	      @Parameter(
