@@ -31,10 +31,9 @@ import io.swagger.oas.annotations.ExternalDocumentation;
 import jaxrs.resources.AirlinesResource;
 import jaxrs.resources.AvailabilityResource;
 import jaxrs.resources.BookingResource;
+import jaxrs.resources.ReviewResource;
 
 @ApplicationPath("/")
-
-
 @Info(
 		title="AirlinesRatingApp API", 
 		version = "1.0", 
@@ -61,7 +60,8 @@ public class JAXRSApp extends Application {
 		Set<Object> singletons = new HashSet<Object>();
 		singletons.add(new AirlinesResource());
 		singletons.add(new AvailabilityResource());
-		singletons.add(new BookingResource());
+		//singletons.add(new BookingResource());
+		singletons.add(new ReviewResource());
 		return singletons;
 	}
 	

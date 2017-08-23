@@ -74,14 +74,15 @@ import jaxrs.model.Booking;
 							description="Booking created",
 							content = @Content(
 									schema=@Schema(name= "id", description = "id of the new booking",type="string")))
-					  },
-			requestBody = @RequestBody(
-					content = @Content(
-							mediaType = "application/json",
-							schema = @Schema(implementation = Booking.class)),
-					required = true,
-					description = "example booking to add"
-					)
+					  }
+//			,
+//			requestBody = @RequestBody(
+//					content = @Content(
+//							mediaType = "application/json",
+//							schema = @Schema(implementation = Booking.class)),
+//					required = true,
+//					description = "example booking to add"
+//					)
 			)
 	@Consumes("application/json")
 	@Produces("application/json")
