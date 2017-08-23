@@ -26,12 +26,15 @@ import io.swagger.oas.annotations.info.Contact;
 import io.swagger.oas.annotations.info.Info;
 import io.swagger.oas.annotations.info.License;
 import io.swagger.oas.annotations.media.Schema;
+import io.swagger.oas.annotations.security.SecurityRequirement;
 import io.swagger.oas.annotations.ExternalDocumentation;
 import jaxrs.resources.AirlinesResource;
 import jaxrs.resources.AvailabilityResource;
 import jaxrs.resources.BookingResource;
 
 @ApplicationPath("/")
+
+
 @Info(
 		title="AirlinesRatingApp API", 
 		version = "1.0", 
@@ -44,9 +47,7 @@ import jaxrs.resources.BookingResource;
 
 @License(
 		name = "Apache 2.0",
-		url = "http://www.apache.org/licenses/LICENSE-2.0.html"
-		)
-
+		url = "http://www.apache.org/licenses/LICENSE-2.0.html")
 @Schema(
 		name = "AirlinesRatingApp API",
 		description = "APIs for booking and managing air flights",
