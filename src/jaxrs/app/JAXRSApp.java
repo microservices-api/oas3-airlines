@@ -34,10 +34,7 @@ import jaxrs.resources.BookingResource;
 
 @ApplicationPath("/")
 
-@SecurityRequirement(
-		name = "airlines_auth",
-		scopes = {"write:reviews"}
-		)
+
 @Info(
 		title="AirlinesRatingApp API", 
 		version = "1.0", 

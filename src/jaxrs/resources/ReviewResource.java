@@ -17,24 +17,30 @@ import javax.ws.rs.core.Response.Status;
 
 import io.swagger.oas.annotations.Operation;
 import io.swagger.oas.annotations.Parameter;
+import io.swagger.oas.annotations.callbacks.Callback;
 import io.swagger.oas.annotations.security.OAuthFlows;
 import io.swagger.oas.annotations.security.OAuthFlow;
 import io.swagger.oas.annotations.servers.Server;
 import io.swagger.oas.annotations.servers.ServerVariable;
 import io.swagger.oas.annotations.media.Content;
 import io.swagger.oas.annotations.media.Schema;
+import io.swagger.oas.annotations.media.ArraySchema;
 import io.swagger.oas.annotations.parameters.Parameters;
 import io.swagger.oas.annotations.parameters.RequestBody;
 import io.swagger.oas.annotations.media.ExampleObject;
 import io.swagger.oas.annotations.responses.ApiResponse;
 import io.swagger.oas.annotations.security.SecurityScheme;
 import io.swagger.oas.annotations.security.Scopes;
+import io.swagger.oas.annotations.security.SecurityRequirement;
 import jaxrs.model.Airline;
 import jaxrs.model.Review;
 import jaxrs.model.User;
 
 @Path("/reviews")
 @Schema(name = "Airlines Rating App")
+@SecurityRequirement(
+		name = "reviews",
+		scopes = "write:reviews")
 @SecurityScheme(
 		type = "oauth2",
 		description = "authentication needed to create and delete reviews",
@@ -52,6 +58,7 @@ import jaxrs.model.User;
 							)
 				),
 		name = "")
+
 public class ReviewResource {
 	
 	private static Map<Integer, Review> reviews = new ConcurrentHashMap<Integer, Review>();
@@ -87,6 +94,7 @@ public class ReviewResource {
 	@GET
 	@Path("{id}")
 	@Operation(
+			
 			summary="Get a review with ID", 
 			responses={
 					@ApiResponse(
@@ -162,10 +170,18 @@ public class ReviewResource {
 	}
 
 	@GET
-	@Path("{user}")
+	@Path("{airline}")
 	@Operation(
 			summary="Get all reviews by airlines", 
 			parameters = {
+					@Parameter(
+							name = "airline",
+							description = "name of the airlines for the reviews",
+							required = true, 
+							in = "path",
+							content = @Content(
+									examples = @ExampleObject(
+												value = "Acme Air"))) 
 					
 			},
 			responses={
@@ -262,6 +278,7 @@ public class ReviewResource {
 	}
 	
 	@POST
+	@Callback()
 	@Operation(
 			summary="Create a Review",
 			servers = {
@@ -297,6 +314,7 @@ public class ReviewResource {
 					required = true,
 					content = @Content(
 							mediaType = "application/json",
+							
 							schema = @Schema(implementation = Review.class))) 
 			Review review) {
 		reviews.put(currentId, review);
