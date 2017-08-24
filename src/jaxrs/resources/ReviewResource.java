@@ -205,7 +205,7 @@ public class ReviewResource {
 					content = @Content(
 							examples = @ExampleObject(
 										value = "Acme Air"))) 
-			@PathParam("airlines") String airlines){
+			@PathParam("airline") String airlines){
 		
 		List<Review> reviewsByAirlines = new ArrayList<Review>();
 		for (Review review : reviews.values()) {
@@ -278,7 +278,7 @@ public class ReviewResource {
 	}
 	
 	@POST
-	@Callback()
+	//@Callback()
 	@Operation(
 			summary="Create a Review",
 			servers = {
@@ -301,7 +301,13 @@ public class ReviewResource {
 			requestBody = @RequestBody(
 					content = @Content(
 							mediaType = "application/json",
-							schema = @Schema(implementation = Review.class)),
+							schema = @Schema(implementation = Review.class),
+							examples = @ExampleObject(
+									name = "review",
+									summary = "External review example",										  
+									externalValue = "http://foo.bar/examples/review-example.json"
+									)
+							),
 					required = true,
 					description = "example review to add"
 					)
