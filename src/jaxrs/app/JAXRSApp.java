@@ -60,7 +60,7 @@ public class JAXRSApp extends Application {
 		Set<Object> singletons = new HashSet<Object>();
 		singletons.add(new AirlinesResource());
 		singletons.add(new AvailabilityResource());
-		//singletons.add(new BookingResource());
+		singletons.add(new BookingResource());
 		singletons.add(new ReviewResource());
 		return singletons;
 	}

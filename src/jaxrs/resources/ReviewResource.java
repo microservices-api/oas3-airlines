@@ -285,23 +285,16 @@ public class ReviewResource {
 	 */
 	
 	@POST
-	@Callback(
-			callbackUrlExpression = "http://localhost:9080/airlines/reviews/",
-			name = "get review",
-			operation = @Operation()
-			)
 	@Operation(
 			summary="Create a Review",
-			servers = {
-					@Server(
-							description = "view of all the reviews",
-							url = "http://localhost:9080/airlines/reviews/{id}",
-							variables = {
-									@ServerVariable(
-											name = "id",
-											description = "id of the review")
-									})
-					},
+//			servers = @Server(
+//							description = "view of all the reviews",
+//							url = "localhost:9080/airlines/reviews".
+//							variables = {
+							//			@ServerVariable(
+							//					name = "id",
+							//					description = "id of the review")
+							//			}),
 			responses={
 					@ApiResponse(
 							responseCode="201",
