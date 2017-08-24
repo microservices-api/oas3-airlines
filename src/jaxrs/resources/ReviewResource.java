@@ -24,23 +24,21 @@ import io.swagger.oas.annotations.servers.Server;
 import io.swagger.oas.annotations.servers.ServerVariable;
 import io.swagger.oas.annotations.media.Content;
 import io.swagger.oas.annotations.media.Schema;
-import io.swagger.oas.annotations.media.ArraySchema;
 import io.swagger.oas.annotations.parameters.Parameters;
 import io.swagger.oas.annotations.parameters.RequestBody;
 import io.swagger.oas.annotations.media.ExampleObject;
 import io.swagger.oas.annotations.responses.ApiResponse;
 import io.swagger.oas.annotations.security.SecurityScheme;
 import io.swagger.oas.annotations.security.Scopes;
-import io.swagger.oas.annotations.security.SecurityRequirement;
 import jaxrs.model.Airline;
 import jaxrs.model.Review;
 import jaxrs.model.User;
 
 @Path("/reviews")
 @Schema(name = "Airlines Rating App")
-@SecurityRequirement(
-		name = "reviews",
-		scopes = "write:reviews")
+//@SecurityRequirement(
+//		name = "reviews",
+//		scopes = "write:reviews")
 @SecurityScheme(
 		type = "oauth2",
 		description = "authentication needed to create and delete reviews",
@@ -94,6 +92,7 @@ public class ReviewResource {
 	@GET
 	@Path("{id}")
 	@Operation(
+			operationId = "getReviewById",
 			
 			summary="Get a review with ID", 
 			responses={
@@ -108,7 +107,7 @@ public class ReviewResource {
 							description="Review not found")
 			})
 	@Produces("application/json")
-	public Response getBookingById(
+	public Response getReviewById(
 			@Parameter(
 					name = "id",
 					description = "ID of the booking",
@@ -130,6 +129,7 @@ public class ReviewResource {
 	@GET
 	@Path("{user}")
 	@Operation(
+			operationId = "getReviewByUser",
 			summary="Get all reviews by user", 
 			responses={
 					@ApiResponse(
@@ -143,7 +143,7 @@ public class ReviewResource {
 							description="Review(s) not found")
 			})
 	@Produces("application/json")
-	public Response getBookingByUser(
+	public Response getReviewByUser(
 			@Parameter(
 					name = "user",
 					description = "username of the user for the reviews",
@@ -172,6 +172,7 @@ public class ReviewResource {
 	@GET
 	@Path("{airline}")
 	@Operation(
+			operationId = "getReviewByAirline",
 			summary="Get all reviews by airlines", 
 			parameters = {
 					@Parameter(
@@ -196,7 +197,7 @@ public class ReviewResource {
 							description="Review(s) not found")
 			})
 	@Produces("application/json")
-	public Response getBookingByAirline(
+	public Response getReviewByAirline(
 			@Parameter(
 					name = "airline",
 					description = "name of the airlines for the reviews",
@@ -225,6 +226,7 @@ public class ReviewResource {
 	@GET
 	@Path("{user}/{airlines}")
 	@Operation(
+			operationId = "getReviewByAirlineAndUser",
 			summary="Get all reviews for an airline by User", 
 			responses={
 					@ApiResponse(
@@ -238,7 +240,7 @@ public class ReviewResource {
 							description="Review(s) not found")
 			})
 	@Produces("application/json")
-	public Response getBookingByAirlineAndUser(
+	public Response getReviewByAirlineAndUser(
 			@Parameters(
 					parameters = {
 							@Parameter(
@@ -277,8 +279,17 @@ public class ReviewResource {
 		}
 	}
 	
+	/*
+	 * TODO: add authentication once security field is working
+	 * TODO: add callbacks
+	 */
+	
 	@POST
-	//@Callback()
+	@Callback(
+			callbackUrlExpression = "http://localhost:9080/airlines/reviews/",
+			name = "get review",
+			operation = @Operation()
+			)
 	@Operation(
 			summary="Create a Review",
 			servers = {
@@ -326,6 +337,10 @@ public class ReviewResource {
 		reviews.put(currentId, review);
 		return Response.status(Status.CREATED).entity("{\"id\":" + currentId++ + "}").build();	
 	}
+	
+	/*
+	 * TODO: add authentication once security field is working
+	 */
 	
 	@DELETE
 	@Path("{id}")
