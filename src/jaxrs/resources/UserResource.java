@@ -6,7 +6,7 @@ import io.swagger.oas.annotations.info.Info;
 import io.swagger.oas.annotations.parameters.RequestBody;
 import io.swagger.oas.annotations.info.License;
 import io.swagger.oas.annotations.links.Link;
-import io.swagger.oas.annotations.links.LinkParameters;
+import io.swagger.oas.annotations.links.LinkParameter;
 import io.swagger.oas.annotations.media.Schema;
 import io.swagger.oas.annotations.media.ArraySchema;
 import io.swagger.oas.annotations.media.ExampleObject;
@@ -14,7 +14,7 @@ import io.swagger.oas.annotations.responses.ApiResponse;
 import io.swagger.oas.annotations.security.SecurityScheme;
 import io.swagger.oas.annotations.security.OAuthFlows;
 import io.swagger.oas.annotations.security.OAuthFlow;
-import io.swagger.oas.annotations.security.Scopes;
+import io.swagger.oas.annotations.security.OAuthScope;
 import io.swagger.oas.annotations.security.SecurityRequirement;
 import io.swagger.oas.annotations.media.Content;
 import jaxrs.data.UserData;
@@ -50,7 +50,7 @@ import javax.ws.rs.*;
 		  flows = @OAuthFlows(
 				  implicit = @OAuthFlow(
 						  authorizationUrl = "http://exampleurl.com/authorization", 
-						  scopes = @Scopes(
+						  scopes = @OAuthScope(
 								  name = "write:users", 
 								  description = "modify user/s record/s in airlines database."
 								  )
@@ -403,7 +403,7 @@ public class UserResource {
 									  name = "User name",
 									  description = "The username corresponding to provided user id",
 									  operationId = "getUserByName",
-									  parameters = @LinkParameters(
+									  parameters = @LinkParameter(
 											  name = "userId",
 											  expression = "$request.path.id"))
 							  ),

@@ -18,10 +18,11 @@ import javax.ws.rs.core.Response.Status;
 import io.swagger.oas.annotations.Operation;
 import io.swagger.oas.annotations.Parameter;
 import io.swagger.oas.annotations.callbacks.Callback;
+//import io.swagger.oas.annotations.callbacks.Callback;
 import io.swagger.oas.annotations.security.OAuthFlows;
 import io.swagger.oas.annotations.security.OAuthFlow;
-import io.swagger.oas.annotations.servers.Server;
-import io.swagger.oas.annotations.servers.ServerVariable;
+//import io.swagger.oas.annotations.servers.Server;
+//import io.swagger.oas.annotations.servers.ServerVariable;
 import io.swagger.oas.annotations.media.Content;
 import io.swagger.oas.annotations.media.Schema;
 import io.swagger.oas.annotations.parameters.Parameters;
@@ -29,23 +30,23 @@ import io.swagger.oas.annotations.parameters.RequestBody;
 import io.swagger.oas.annotations.media.ExampleObject;
 import io.swagger.oas.annotations.responses.ApiResponse;
 import io.swagger.oas.annotations.security.SecurityScheme;
-import io.swagger.oas.annotations.security.Scopes;
+import io.swagger.oas.annotations.servers.Server;
+import io.swagger.oas.annotations.servers.ServerVariable;
+import io.swagger.oas.annotations.security.OAuthScope;
+import io.swagger.oas.annotations.security.SecurityRequirement;
 import jaxrs.model.Airline;
 import jaxrs.model.Review;
 import jaxrs.model.User;
 
 @Path("/reviews")
 @Schema(name = "Airlines Rating App")
-//@SecurityRequirement(
-//		name = "reviews",
-//		scopes = "write:reviews")
 @SecurityScheme(
 		type = "oauth2",
 		description = "authentication needed to create and delete reviews",
 		flows = @OAuthFlows(
 					implicit = @OAuthFlow(
 							authorizationUrl = "https://example.com/api/oauth/dialog",
-							scopes = @Scopes(
+							scopes = @OAuthScope(
 									name = "write:reviews",
 									description = "create a review"
 									)
@@ -287,21 +288,27 @@ public class ReviewResource {
 	@POST
 	@Operation(
 			summary="Create a Review",
-//			servers = @Server(
-//							description = "view of all the reviews",
-//							url = "localhost:9080/airlines/reviews".
-//							variables = {
-							//			@ServerVariable(
-							//					name = "id",
-							//					description = "id of the review")
-							//			}),
+			servers = {
+					@Server(
+							url = "localhost:9080/airlines/reviews/{id}",
+							description = "view of all the reviews",
+							variables = {
+									@ServerVariable(
+											name = "id",
+											description = "id of the review",
+											defaultValue = "1")
+							})			
+			},
+			security = @SecurityRequirement(
+					name = "reviews",
+					scopes = "write:reviews"),
 			responses={
 					@ApiResponse(
 							responseCode="201",
 							description="review created",
 							content = @Content(
 									schema=@Schema(name= "id", description = "id of the new review",type="string")))
-					  },
+					},
 			requestBody = @RequestBody(
 					content = @Content(
 							mediaType = "application/json",

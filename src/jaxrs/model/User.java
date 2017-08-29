@@ -235,8 +235,8 @@ public class User {
 	
 	@Schema(
 			  name = "status",
-			  title = "User Status",
-			  _enum = {"1-registered", "2-active", "3-closed"}
+			  title = "User Status"
+			  //_enum = {"1-registered", "2-active", "3-closed"}
 			  )
 	      
 	public int getUserStatus() {
