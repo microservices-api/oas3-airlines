@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response.Status;
 import io.swagger.oas.annotations.Operation;
 import io.swagger.oas.annotations.Parameter;
 import io.swagger.oas.annotations.callbacks.Callback;
+import io.swagger.oas.annotations.callbacks.Callbacks;
 //import io.swagger.oas.annotations.callbacks.Callback;
 import io.swagger.oas.annotations.security.OAuthFlows;
 import io.swagger.oas.annotations.security.OAuthFlow;
@@ -40,23 +41,23 @@ import jaxrs.model.User;
 
 @Path("/reviews")
 @Schema(name = "Airlines Rating App")
-@SecurityScheme(
-		type = "oauth2",
-		description = "authentication needed to create and delete reviews",
-		flows = @OAuthFlows(
-					implicit = @OAuthFlow(
-							authorizationUrl = "https://example.com/api/oauth/dialog",
-							scopes = @OAuthScope(
-									name = "write:reviews",
-									description = "create a review"
-									)
-							),
-					authorizationCode = @OAuthFlow(
-							authorizationUrl = "https://example.com/api/oauth/dialog",
-							tokenUrl = "https://example.com/api/oauth/token"
-							)
-				),
-		name = "")
+//@SecurityScheme(
+//		type = "oauth2",
+//		description = "authentication needed to create and delete reviews",
+//		flows = @OAuthFlows(
+//					implicit = @OAuthFlow(
+//							authorizationUrl = "https://example.com/api/oauth/dialog",
+//							scopes = @OAuthScope(
+//									name = "write:reviews",
+//									description = "create a review"
+//									)
+//							),
+//					authorizationCode = @OAuthFlow(
+//							authorizationUrl = "https://example.com/api/oauth/dialog",
+//							tokenUrl = "https://example.com/api/oauth/token"
+//							)
+//				),
+//		name = "")
 
 public class ReviewResource {
 	
@@ -282,10 +283,31 @@ public class ReviewResource {
 	
 	/*
 	 * TODO: add authentication once security field is working
-	 * TODO: add callbacks
+	 * TODO: add callbacksyes 
 	 */
 	
 	@POST
+	@Callback(name = "testCallback", operation=@Operation(), callbackUrlExpression="localhost:9080/airlines/reviews/{id}")
+	@Callbacks(
+			{@Callback(
+					name = "testCallback1",
+					operation = @Operation(
+                            operationId = "getAllReviews",
+                            summary = "get all the reviews",
+                            method = "get",
+                            responses = @ApiResponse(
+                                     responseCode = "200",
+                                     description = "successful operation",
+                                     content = @Content(
+                                                     mediaType = "application/json",
+                                                     schema = @Schema(
+                                                                     type = "array",
+                                                                     implementation = Review.class
+                                                                     )
+                                                     )
+                                     )
+                     ), callbackUrlExpression="localhost:9080/airlines/reviews/{id}/1")})
+	
 	@Operation(
 			summary="Create a Review",
 			servers = {
