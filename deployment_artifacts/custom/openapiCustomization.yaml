@@ -1,0 +1,6 @@
+openapi: "3.0.0"
+info:
+  title: "Airlines App REST APIs"
+  version: "1.0.0"
+  x-ibm-css: "${server.config.dir}/custom/banner.css"
+paths: 
