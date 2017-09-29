@@ -15,15 +15,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+
 import io.swagger.oas.annotations.Operation;
 import io.swagger.oas.annotations.Parameter;
 import io.swagger.oas.annotations.callbacks.Callback;
 import io.swagger.oas.annotations.callbacks.Callbacks;
-//import io.swagger.oas.annotations.callbacks.Callback;
+
+import io.swagger.oas.annotations.callbacks.Callback;
+import io.swagger.oas.annotations.callbacks.Callbacks;
 import io.swagger.oas.annotations.security.OAuthFlows;
 import io.swagger.oas.annotations.security.OAuthFlow;
-//import io.swagger.oas.annotations.servers.Server;
-//import io.swagger.oas.annotations.servers.ServerVariable;
+import io.swagger.oas.annotations.servers.Server;
+import io.swagger.oas.annotations.servers.ServerVariable;
+import io.swagger.oas.annotations.tags.Tags;
 import io.swagger.oas.annotations.media.Content;
 import io.swagger.oas.annotations.media.Schema;
 import io.swagger.oas.annotations.parameters.Parameters;
@@ -31,34 +35,44 @@ import io.swagger.oas.annotations.parameters.RequestBody;
 import io.swagger.oas.annotations.media.ExampleObject;
 import io.swagger.oas.annotations.responses.ApiResponse;
 import io.swagger.oas.annotations.security.SecurityScheme;
+import io.swagger.oas.annotations.servers.Servers;
 import io.swagger.oas.annotations.servers.Server;
 import io.swagger.oas.annotations.servers.ServerVariable;
+import io.swagger.oas.annotations.tags.Tag;
 import io.swagger.oas.annotations.security.OAuthScope;
 import io.swagger.oas.annotations.security.SecurityRequirement;
 import jaxrs.model.Airline;
 import jaxrs.model.Review;
 import jaxrs.model.User;
 
-@Path("/reviews")
-@Schema(name = "Airlines Rating App")
-//@SecurityScheme(
-//		type = "oauth2",
-//		description = "authentication needed to create and delete reviews",
-//		flows = @OAuthFlows(
-//					implicit = @OAuthFlow(
-//							authorizationUrl = "https://example.com/api/oauth/dialog",
-//							scopes = @OAuthScope(
-//									name = "write:reviews",
-//									description = "create a review"
-//									)
-//							),
-//					authorizationCode = @OAuthFlow(
-//							authorizationUrl = "https://example.com/api/oauth/dialog",
-//							tokenUrl = "https://example.com/api/oauth/token"
-//							)
-//				),
-//		name = "")
 
+@Path("/reviews")
+
+@Servers(
+		value = {
+				@Server(
+						description = "endpoint for all the review related methods",
+						url = "http://localhost:9080/airlines/reviews/")
+		})
+@SecurityScheme(
+		schemeName = "reviewoauth2",
+		type = "oauth2",
+		description = "authentication needed to create and delete reviews",
+		flows = @OAuthFlows(
+					implicit = @OAuthFlow(
+							authorizationUrl = "https://example.com/api/oauth/dialog",
+							scopes = @OAuthScope(
+									name = "write:reviews",
+									description = "create a review"
+									)
+							),
+					authorizationCode = @OAuthFlow(
+							authorizationUrl = "https://example.com/api/oauth/dialog",
+							tokenUrl = "https://example.com/api/oauth/token"
+							)
+				),
+		name = "")
+@Tags(tags = @Tag(name = "reviews", description = "all the review methods"))
 public class ReviewResource {
 	
 	private static Map<Integer, Review> reviews = new ConcurrentHashMap<Integer, Review>();

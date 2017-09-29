@@ -5,16 +5,15 @@ import io.swagger.oas.annotations.info.Contact;
 import io.swagger.oas.annotations.info.Info;
 import io.swagger.oas.annotations.parameters.RequestBody;
 import io.swagger.oas.annotations.info.License;
+import io.swagger.oas.annotations.headers.Header;
 import io.swagger.oas.annotations.links.Link;
 import io.swagger.oas.annotations.links.LinkParameter;
 import io.swagger.oas.annotations.media.Schema;
 import io.swagger.oas.annotations.media.ArraySchema;
 import io.swagger.oas.annotations.media.ExampleObject;
+import io.swagger.oas.annotations.media.Encoding;
 import io.swagger.oas.annotations.responses.ApiResponse;
 import io.swagger.oas.annotations.security.SecurityScheme;
-import io.swagger.oas.annotations.security.OAuthFlows;
-import io.swagger.oas.annotations.security.OAuthFlow;
-import io.swagger.oas.annotations.security.OAuthScope;
 import io.swagger.oas.annotations.security.SecurityRequirement;
 import io.swagger.oas.annotations.media.Content;
 import jaxrs.data.UserData;
@@ -43,20 +42,11 @@ import javax.ws.rs.*;
 			)
 	)
 @SecurityScheme(
-		  type = "oauth2",
-		  name = "users",
-		  in = "",
-		  scheme = "",
-		  flows = @OAuthFlows(
-				  implicit = @OAuthFlow(
-						  authorizationUrl = "http://exampleurl.com/authorization", 
-						  scopes = @OAuthScope(
-								  name = "write:users", 
-								  description = "modify user/s record/s in airlines database."
-								  )
-						  )
-				  )
-		  )
+		  description = "user security scheme",
+		  type = "http",
+		  name = "test",
+		  schemeName = "httpTestScheme",
+		  scheme = "testScheme")
 @SecurityRequirement(
 		name = "users",
 		scopes = "write:users")
@@ -73,15 +63,28 @@ public class UserResource {
 			  operationId = "createUser",
 			  requestBody = @RequestBody(
 					  description = "Record of a new user to be created in the system.",
-							  required = true,
+					  required = true,
 					  content = @Content(
 							  mediaType = "application/json",
-							  schema = @Schema(implementation = User.class),
+							  schema = @Schema(
+									  name = "testUser",
+									  type = "object",
+									  implementation = User.class),
 							  examples = @ExampleObject(
 										  name = "user",
 										  summary = "External user example",										  
 										  externalValue = "http://foo.bar/examples/user-example.json"
-										  )
+										  ),
+							  encoding = @Encoding(
+									  name = "email",
+									  contentType = "text/plain",
+									  style = "UTF-8",
+									  allowReserved = true,
+									  explode = true,
+									  headers = @Header(
+											  name = "testHeader"
+											  )
+									  )
 							  )
 					  ),
 			  parameters = {
@@ -90,6 +93,7 @@ public class UserResource {
 							  in = "query",
 							  description = "User id for the new user record to be created",
 							  required = true,
+							  allowReserved = true,
 							  style = "form",
 							  schema = @Schema(type = "integer", format = "int32")
 							  ),
@@ -199,11 +203,18 @@ public class UserResource {
 							  required = true,
 							  content = @Content(
 									  mediaType = "application/json",
-									  schema = @Schema(implementation = User.class)
+									  schema = @Schema(
+											  type = "array",
+											  implementation = User.class
+											  ),
+									  encoding = @Encoding(
+											  name = "firstName",
+											  contentType = "application/json",
+											  style = "UTF-8",
+											  allowReserved = true,
+											  explode = false
+											  )
 									  ),									  
-							  schema = @Schema(
-									  type = "array" //Must have items field if type is array, but items is not part of annotation
-									  ),
 							  array = @ArraySchema(
 									  schema = @Schema(
 											  type = "object",
@@ -281,7 +292,20 @@ public class UserResource {
 			  responses = {
 					  @ApiResponse(
 							  responseCode = "200", 
-							  description = "User updated successfully"
+							  description = "User updated successfully",
+							  content = @Content(
+									  schema = @Schema(
+											  name = "upadtedUser",
+											  implementation = User.class
+											  ),
+									  encoding = @Encoding(
+											  name = "password",
+											  contentType = "application/json",
+											  style = "UTF-8",
+											  allowReserved = true,
+											  explode = false
+											  )
+									  )
 							  ),
 					  @ApiResponse(
 							  responseCode = "400", 
@@ -503,4 +527,3 @@ public class UserResource {
 	    return Response.ok().entity("").build();
 	  }
 	}
-

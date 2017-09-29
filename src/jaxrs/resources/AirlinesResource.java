@@ -26,12 +26,14 @@ import io.swagger.oas.annotations.Operation;
 import io.swagger.oas.annotations.media.Content;
 import io.swagger.oas.annotations.media.Schema;
 import io.swagger.oas.annotations.responses.ApiResponse;
+import io.swagger.oas.annotations.tags.Tag;
+import io.swagger.oas.annotations.tags.Tags;
 import jaxrs.app.JAXRSApp;
 import jaxrs.model.Airline;
 
 @Path("")
 @Schema(name = "Airline Booking API")
-
+@Tags(tags = @Tag(name = "airline", description = "all the airlines methods"))
 	public class AirlinesResource {
 	private static Map<Integer, Airline> airlines = new ConcurrentHashMap<Integer, Airline>();
 	

@@ -1,0 +1,9 @@
+{ 
+    "openapi":"3.0.0",
+    "info":{ 
+       "description":"customCSSProvider",
+       "version":"1.0.0",
+       "title":"customCSSProvider",
+       "x-ibm-css":"http://localhost:${bvt.prop.HTTP_default}/customCSSProvider/customizeUI/company-banner.css"
+    }
+}

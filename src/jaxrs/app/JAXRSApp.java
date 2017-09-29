@@ -27,23 +27,26 @@ import io.swagger.oas.annotations.info.Info;
 import io.swagger.oas.annotations.info.License;
 import io.swagger.oas.annotations.media.Schema;
 import io.swagger.oas.annotations.security.SecurityRequirement;
+import io.swagger.oas.annotations.tags.Tag;
 import io.swagger.oas.annotations.ExternalDocumentation;
+import io.swagger.oas.annotations.OpenAPIDefinition;
 import jaxrs.resources.AirlinesResource;
 import jaxrs.resources.AvailabilityResource;
 import jaxrs.resources.BookingResource;
 import jaxrs.resources.ReviewResource;
 
 @ApplicationPath("/")
-@Info(
-		title="AirlinesRatingApp API", 
-		version = "1.0", 
-		contact = @Contact(
-				name = "AirlinesRatingApp API Support",
-				url = "http://airlinesapisupport.com/help",
-				email = "askus@airlinessupport.com"
-				)
-		)
-
+@OpenAPIDefinition(
+		tags = @Tag(name = "Airlines", description = "airlines app"),
+		externalDocs = @ExternalDocumentation(
+				description = "instructions for how to deploy this app",
+				url = "https://github.com/microservices-api/oas3-airlines/blob/master/README.md"),
+		info = @Info(
+				title="AirlinesRatingApp API", 
+				version = "1.0", 
+				contact = @Contact(
+						name = "AirlinesRatingApp API Support",
+						url = "https://github.com/microservices-api/oas3-airlines")))
 @License(
 		name = "Apache 2.0",
 		url = "http://www.apache.org/licenses/LICENSE-2.0.html")

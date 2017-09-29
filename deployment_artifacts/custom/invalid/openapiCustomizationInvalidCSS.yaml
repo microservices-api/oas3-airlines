@@ -1,0 +1,6 @@
+openapi: "3.0.0"
+info:
+  title: "Custom REST APIs"
+  version: "1.0.0"
+  x-ibm-css: "${server.config.dir}/custom/invalid/invalidCSS.css"
+paths: 

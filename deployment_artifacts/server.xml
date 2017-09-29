@@ -1,0 +1,22 @@
+<server description="new server">
+
+    <!-- Enable features -->
+    <featureManager>
+        <feature>openapi-3.0</feature>
+	<feature>jaxrs-2.0</feature>
+        <feature>localConnector-1.0</feature>
+    </featureManager>
+
+    <!-- To access this server from a remote client add a host attribute to the following element, e.g. host="*" -->
+    <httpEndpoint httpPort="9080" httpsPort="9443" id="defaultHttpEndpoint"/>
+
+    <!-- Automatically expand WAR files and EAR files -->
+    <applicationManager autoExpand="true"/>
+
+    <applicationMonitor updateTrigger="mbean"/>
+	<openapi customization="custom/openapiCustomization.yaml" />
+    
+    <webApplication id="airlines" location="airlines.war" name="airlines">
+    	<classloader apiTypeVisibility="spec,ibm-api,api,stable, third-party"></classloader>
+    </webApplication>
+</server>
