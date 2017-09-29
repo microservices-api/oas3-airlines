@@ -27,14 +27,15 @@ import javax.ws.rs.core.Response;
 import io.swagger.oas.annotations.media.Content;
 import io.swagger.oas.annotations.media.Schema;
 import io.swagger.oas.annotations.responses.ApiResponse;
+import io.swagger.oas.annotations.tags.Tag;
+import io.swagger.oas.annotations.tags.Tags;
 import io.swagger.oas.annotations.Operation;
 import io.swagger.oas.annotations.Parameter;
 import jaxrs.app.JAXRSApp;
 import jaxrs.model.Flight;
 
 @Path("/availability")
-@Schema(name = "Airline Booking API")
-
+@Tags(tags = @Tag(name = "availability", description = "all the availibility methods"))
 	public class AvailabilityResource {
 	
 	@GET

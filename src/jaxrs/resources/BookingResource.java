@@ -19,9 +19,12 @@ import io.swagger.oas.annotations.Operation;
 import io.swagger.oas.annotations.Parameter;
 import io.swagger.oas.annotations.parameters.RequestBody;
 import io.swagger.oas.annotations.media.Content;
+import io.swagger.oas.annotations.callbacks.Callback;
 import io.swagger.oas.annotations.media.ExampleObject;
 import io.swagger.oas.annotations.media.Schema;
 import io.swagger.oas.annotations.responses.ApiResponse;
+import io.swagger.oas.annotations.tags.Tag;
+import io.swagger.oas.annotations.tags.Tags;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,7 +44,7 @@ import jaxrs.model.Booking;
 import jaxrs.model.User;
 
 @Path("/bookings")
-
+@Tags(tags = @Tag(name = "bookings", description = "all the bookings methods"))
 	public class BookingResource {
 	private Map<Integer, Booking> bookings = new ConcurrentHashMap<Integer, Booking>();
 	private volatile int currentId = 0;
@@ -68,6 +71,24 @@ import jaxrs.model.User;
 	}
 	
 	@POST
+	@Callback(
+			name = "get all the bookings",
+			callbackUrlExpression = "http://localhost:9080/airlines/bookings",
+			operation = @Operation(
+					summary="Retrieve all bookings for current user", 
+					responses={
+							@ApiResponse(
+									responseCode="200",
+									description="Bookings retrieved",
+									content=@Content(
+											schema=@Schema(
+													type="array",
+													implementation=Booking.class))
+									),
+							@ApiResponse(
+									responseCode="404",
+									description="No bookings found for the user.")
+					}))
 	@Operation(
 			method = "post",
 			summary="Create a booking",
