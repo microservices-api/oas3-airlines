@@ -24,13 +24,13 @@ $ ./server create myServer
 4. Copy the file `oas3-airlines/deployment_artifacts/server.xml` into `wlp/usr/servers/myServer`
 5. Copy the file `oas3-airlines/deployment_artifacts/airlines.war` into `wlp/usr/servers/myServer/apps`
 6. Copy the directory `oas3-airlines/deployment_artifacts/custom` into `wlp/usr/servers/myServer`
-6. Install the needed features by running
+7. Install the needed features by running
 ```
 $ ./installUtility install --acceptLicense myServer
 ```
-7. Start the server by running 
+8. Start the server by running 
 ```
 $ ./server start myServer
 ```
-8. Open a browser and navigate to `http://<your_host>/api/explorer` to see the OpenAPI UI
+9. Open a browser and navigate to `http://<your_host>/api/explorer` to see the OpenAPI UI
 
