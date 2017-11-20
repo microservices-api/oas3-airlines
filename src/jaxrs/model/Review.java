@@ -4,8 +4,8 @@ import io.swagger.oas.annotations.media.Schema;
 
 public class Review {
 
-//	@Schema(example = "0", required = true)
-//	private String id;
+	@Schema(example = "0", required = true)
+	private String id;
 	
 	@Schema(required = true)
 	private User user;
@@ -28,9 +28,9 @@ public class Review {
 	 * @param rating the rating for this Review
 	 * @param comment the comments for this Review
 	 */
-	public Review(User user, Airline airlines, int rating, String comment) {
+	public Review(String id, User user, Airline airlines, int rating, String comment) {
 		super();
-		//this.id = id;
+		this.id = id;
 		this.user = user;
 		this.airlines = airlines;
 		this.rating = rating;
@@ -41,17 +41,17 @@ public class Review {
 	 * Returns the id of this Review
 	 * @return id
 	 */
-//	public String getId() {
-//		return id;
-//	}
+	public String getId() {
+		return id;
+	}
 
 	/**
 	 * Sets the id for this Review
 	 * @param id
 	 */
-//	public void setId(String id) {
-//		this.id = id;
-//	}
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	/**
 	 * Returns the user of this Review

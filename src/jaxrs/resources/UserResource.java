@@ -44,7 +44,6 @@ import javax.ws.rs.*;
 @SecurityScheme(
 		  description = "user security scheme",
 		  type = "http",
-		  name = "test",
 		  schemeName = "httpTestScheme",
 		  scheme = "testScheme")
 @SecurityRequirement(
@@ -78,7 +77,7 @@ public class UserResource {
 							  encoding = @Encoding(
 									  name = "email",
 									  contentType = "text/plain",
-									  style = "UTF-8",
+									  style = "form",
 									  allowReserved = true,
 									  explode = true,
 									  headers = @Header(
@@ -209,10 +208,10 @@ public class UserResource {
 											  ),
 									  encoding = @Encoding(
 											  name = "firstName",
-											  contentType = "application/json",
-											  style = "UTF-8",
+											  contentType = "text/plain",
+											  style = "form",
 											  allowReserved = true,
-											  explode = false
+											  explode = true
 											  )
 									  ),									  
 							  array = @ArraySchema(
@@ -300,10 +299,10 @@ public class UserResource {
 											  ),
 									  encoding = @Encoding(
 											  name = "password",
-											  contentType = "application/json",
-											  style = "UTF-8",
+											  contentType = "text/plain",
+											  style = "form",
 											  allowReserved = true,
-											  explode = false
+											  explode = true
 											  )
 									  )
 							  ),

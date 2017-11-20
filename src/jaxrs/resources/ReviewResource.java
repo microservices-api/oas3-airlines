@@ -21,8 +21,6 @@ import io.swagger.oas.annotations.Parameter;
 import io.swagger.oas.annotations.callbacks.Callback;
 import io.swagger.oas.annotations.callbacks.Callbacks;
 
-import io.swagger.oas.annotations.callbacks.Callback;
-import io.swagger.oas.annotations.callbacks.Callbacks;
 import io.swagger.oas.annotations.security.OAuthFlows;
 import io.swagger.oas.annotations.security.OAuthFlow;
 import io.swagger.oas.annotations.servers.Server;
@@ -36,8 +34,6 @@ import io.swagger.oas.annotations.media.ExampleObject;
 import io.swagger.oas.annotations.responses.ApiResponse;
 import io.swagger.oas.annotations.security.SecurityScheme;
 import io.swagger.oas.annotations.servers.Servers;
-import io.swagger.oas.annotations.servers.Server;
-import io.swagger.oas.annotations.servers.ServerVariable;
 import io.swagger.oas.annotations.tags.Tag;
 import io.swagger.oas.annotations.security.OAuthScope;
 import io.swagger.oas.annotations.security.SecurityRequirement;
@@ -79,15 +75,14 @@ public class ReviewResource {
 	private volatile int currentId = 0;
 	
 	static {
-		reviews.put(1, new Review(new User(), new Airline("Acme Air", "1-888-1234-567"), 8, "great!")  );
-		reviews.put(2, new Review(new User(), new Airline("Acme Air", "1-888-1234-567"), 7, "good")  );
+		reviews.put(1, new Review("1", new User(), new Airline("Acme Air", "1-888-1234-567"), 8, "great!")  );
+		reviews.put(2, new Review("2", new User(), new Airline("Acme Air", "1-888-1234-567"), 7, "good")  );
 	}
 	@GET
-	@Operation(
-			
+	@Operation(			
 			operationId = "getAllReviews",
 			summary = "get all the reviews",
-			method = "GET",
+			method = "get",
 			responses = @ApiResponse(
 					responseCode = "200",
 					description = "successful operation",
@@ -108,8 +103,7 @@ public class ReviewResource {
 	@GET
 	@Path("{id}")
 	@Operation(
-			operationId = "getReviewById",
-			
+			operationId = "getReviewById",			
 			summary="Get a review with ID", 
 			responses={
 					@ApiResponse(
@@ -198,8 +192,7 @@ public class ReviewResource {
 							in = "path",
 							content = @Content(
 									examples = @ExampleObject(
-												value = "Acme Air"))) 
-					
+												value = "Acme Air"))) 					
 			},
 			responses={
 					@ApiResponse(
@@ -295,13 +288,8 @@ public class ReviewResource {
 		}
 	}
 	
-	/*
-	 * TODO: add authentication once security field is working
-	 * TODO: add callbacksyes 
-	 */
-	
 	@POST
-	@Callback(name = "testCallback", operation=@Operation(), callbackUrlExpression="localhost:9080/airlines/reviews/{id}")
+	@Callback(name = "testCallback", operation=@Operation(), callbackUrlExpression="http://localhost:9080/oas3-airlines/reviews/{id}")
 	@Callbacks(
 			{@Callback(
 					name = "testCallback1",
@@ -320,13 +308,14 @@ public class ReviewResource {
                                                                      )
                                                      )
                                      )
-                     ), callbackUrlExpression="localhost:9080/airlines/reviews/{id}/1")})
+                     ), 
+					callbackUrlExpression="http://localhost:9080/oas3-airlines/reviews/{id}/1")})
 	
 	@Operation(
 			summary="Create a Review",
 			servers = {
 					@Server(
-							url = "localhost:9080/airlines/reviews/{id}",
+							url = "localhost:9080/oas3-airlines/reviews/1",
 							description = "view of all the reviews",
 							variables = {
 									@ServerVariable(
@@ -336,7 +325,7 @@ public class ReviewResource {
 							})			
 			},
 			security = @SecurityRequirement(
-					name = "reviews",
+					name = "reviewoauth2",
 					scopes = "write:reviews"),
 			responses={
 					@ApiResponse(
@@ -374,9 +363,6 @@ public class ReviewResource {
 		return Response.status(Status.CREATED).entity("{\"id\":" + currentId++ + "}").build();	
 	}
 	
-	/*
-	 * TODO: add authentication once security field is working
-	 */
 	
 	@DELETE
 	@Path("{id}")
