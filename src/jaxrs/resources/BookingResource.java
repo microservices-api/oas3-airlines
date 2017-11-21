@@ -41,7 +41,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import jaxrs.model.Booking;
-import jaxrs.model.User;
 
 @Path("/bookings")
 @Tags(tags = @Tag(name = "bookings", description = "all the bookings methods"))

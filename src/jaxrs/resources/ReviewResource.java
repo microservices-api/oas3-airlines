@@ -43,7 +43,6 @@ import jaxrs.model.User;
 
 
 @Path("/reviews")
-
 @Servers(
 		value = {
 				@Server(
@@ -66,9 +65,14 @@ import jaxrs.model.User;
 							authorizationUrl = "https://example.com/api/oauth/dialog",
 							tokenUrl = "https://example.com/api/oauth/token"
 							)
-				),
-		name = "")
-@Tags(tags = @Tag(name = "reviews", description = "all the review methods"))
+				)
+		)
+@Tags(
+		tags = @Tag(
+				name = "reviews", 
+				description = "all the review methods"
+				)
+		)
 public class ReviewResource {
 	
 	private static Map<Integer, Review> reviews = new ConcurrentHashMap<Integer, Review>();
@@ -104,7 +108,8 @@ public class ReviewResource {
 	@Path("{id}")
 	@Operation(
 			operationId = "getReviewById",			
-			summary="Get a review with ID", 
+			summary="Get a review with ID",
+			method= "get",
 			responses={
 					@ApiResponse(
 							responseCode="200", 
@@ -289,13 +294,13 @@ public class ReviewResource {
 	}
 	
 	@POST
-	@Callback(name = "testCallback", operation=@Operation(), callbackUrlExpression="http://localhost:9080/oas3-airlines/reviews/{id}")
 	@Callbacks(
 			{@Callback(
-					name = "testCallback1",
+					name = "testCallback",
+					callbackUrlExpression="http://localhost:9080/oas3-airlines/reviews",
 					operation = @Operation(
                             operationId = "getAllReviews",
-                            summary = "get all the reviews",
+                            summary = "Get all reviews",
                             method = "get",
                             responses = @ApiResponse(
                                      responseCode = "200",
@@ -308,9 +313,10 @@ public class ReviewResource {
                                                                      )
                                                      )
                                      )
-                     ), 
-					callbackUrlExpression="http://localhost:9080/oas3-airlines/reviews/{id}/1")})
-	
+                            )
+					)
+			}
+			)	
 	@Operation(
 			summary="Create a Review",
 			servers = {
@@ -355,8 +361,7 @@ public class ReviewResource {
 					description = "review to create",
 					required = true,
 					content = @Content(
-							mediaType = "application/json",
-							
+							mediaType = "application/json",							
 							schema = @Schema(implementation = Review.class))) 
 			Review review) {
 		reviews.put(currentId, review);
