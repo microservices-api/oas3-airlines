@@ -16,7 +16,7 @@
     <applicationMonitor updateTrigger="mbean"/>
 	<openapi customization="custom/openapiCustomization.yaml" />
     
-    <webApplication id="airlines" location="airlines.war" name="airlines">
+    <webApplication id="airlines" location="oas3-airlines.war" name="airlines">
     	<classloader apiTypeVisibility="spec,ibm-api,api,stable, third-party"></classloader>
     </webApplication>
 </server>
