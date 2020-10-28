@@ -1,7 +1,7 @@
 # Airlines App
 
 ### Introduction
-This app demonstrates how the OpenAPI feature can be used along with JAXRS annotations to document your REST APIs in a neat and organized manner. You can specify the following with the OpenAPI feature:
+This app demonstrates how the OpenAPI feature can be used along with JAXRS annotations to document your REST APIs in a neat and organized manner. You can specify the following with the OpenAPI feature: 
 
   - Available endpoints and operations on each endpoint 
   - Operation parameters Input and output for each operation
